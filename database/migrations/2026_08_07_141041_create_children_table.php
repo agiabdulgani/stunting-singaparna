@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('children', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('parent_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('posyandu_id')->constrained('posyandus')->onDelete('cascade');
+            $table->string('nik')->unique();
+            $table->string('name');
+            $table->enum('gender', ['L', 'P']);
+            $table->date('birth_date');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('children');
+    }
+};
