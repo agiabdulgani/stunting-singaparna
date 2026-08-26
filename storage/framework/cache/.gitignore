@@ -1,3 +1,95 @@
-*
+# ==========================================
+# Laravel
+# ==========================================
+
+/vendor/
+/node_modules/
+
+/public/build
+/public/hot
+/public/storage
+
+/storage/*.key
+/storage/app/public
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/testing
+/storage/framework/views
+/storage/logs
+
+/bootstrap/cache/*.php
+
+
+# ==========================================
+# Environment
+# ==========================================
+
+.env
+.env.*
+!.env.example
+
+
+# ==========================================
+# Testing
+# ==========================================
+
+.phpunit.result.cache
+/.phpunit.cache
+
+
+# ==========================================
+# IDE
+# ==========================================
+
+/.fleet
+/.idea
+/.nova
+/.vscode
+
+*.swp
+*.swo
+
+
+# ==========================================
+# OS
+# ==========================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+
+# ==========================================
+# Database
+# ==========================================
+
+*.sqlite
+*.sqlite3
+
+
+# ==========================================
+# Logs & Temporary
+# ==========================================
+
+*.log
+*.tmp
+*.temp
+*.bak
+
+
+# ==========================================
+# Package Manager Logs
+# ==========================================
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# ==========================================
+# Folder data
+# ==========================================
+
+# data/ TIDAK di-ignore
 !data/
-!.gitignore

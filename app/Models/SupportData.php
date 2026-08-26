@@ -10,10 +10,13 @@ class SupportData extends Model
     use HasFactory;
 
     /**
-     * Nama tabel yang terhubung dengan model.
+     * Nama tabel database.
      */
     protected $table = 'support_data';
 
+    /**
+     * Kolom yang dapat diisi melalui mass assignment.
+     */
     protected $fillable = [
         'village_name',
         'paud_institution_count',
@@ -22,10 +25,13 @@ class SupportData extends Model
         'paud_teacher_count',
     ];
 
+    /**
+     * Casting tipe data.
+     */
     protected $casts = [
         'paud_institution_count' => 'integer',
-        'smp_mts_count'          => 'integer',
-        'sma_ma_count'            => 'integer',
-        'paud_teacher_count'     => 'integer',
+        'smp_mts_count' => 'integer',
+        'sma_ma_count' => 'integer',
+        'paud_teacher_count' => 'integer',
     ];
 }

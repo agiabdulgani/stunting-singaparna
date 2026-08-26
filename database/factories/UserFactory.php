@@ -12,9 +12,9 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
-     * The current password being used by the factory.
+     * Password default yang digunakan factory.
      */
-    protected static ?string $password;
+    protected static ?string $password = null;
 
     /**
      * Define the model's default state.
@@ -25,20 +25,89 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+
             'email' => fake()->unique()->safeEmail(),
+
             'email_verified_at' => now(),
+
             'password' => static::$password ??= Hash::make('password'),
+
             'remember_token' => Str::random(10),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Role User
+            |--------------------------------------------------------------------------
+            |
+            | Sesuaikan dengan role yang digunakan di aplikasi.
+            |
+            */
+            'role' => fake()->randomElement([
+                'admin',
+                'operator_desa',
+                'kader',
+                'orang_tua',
+            ]),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Wilayah
+            |--------------------------------------------------------------------------
+            */
+            'wilayah' => fake()->randomElement([
+                'Singaparna',
+                'Tasikmalaya',
+            ]),
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * User tanpa verifikasi email.
      */
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * User sebagai admin.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+        ]);
+    }
+
+    /**
+     * User sebagai operator desa.
+     */
+    public function operatorDesa(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'operator_desa',
+        ]);
+    }
+
+    /**
+     * User sebagai kader.
+     */
+    public function kader(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'kader',
+        ]);
+    }
+
+    /**
+     * User sebagai orang tua.
+     */
+    public function orangTua(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'orang_tua',
         ]);
     }
 }

@@ -1,2 +1,58 @@
-*
+# Laravel
+/vendor/
+/node_modules/
+/public/build/
+/public/hot
+/public/storage
+
+# Environment
+.env
+.env.backup
+.env.production
+.env.local
+.env.testing
+
+# Laravel runtime
+.phpunit.result.cache
+storage/*.key
+
+# Logs
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+
+# IDE
+/.idea/
+/.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Testing
+.phpunit.result.cache
+
+# Temporary files
+*.log
+*.tmp
+
+# Laravel Sail
+/.docker/
+
+# Ignore uploaded/generated files
+/public/uploads/
+
+# Keep important directories
+!/storage/app/
+!/storage/framework/
+!/storage/logs/
+
+# Keep .gitignore itself
 !.gitignore

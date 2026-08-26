@@ -1,2 +1,96 @@
-*
-!.gitignore
+# ==========================================
+# Laravel
+# ==========================================
+
+/vendor/
+/node_modules/
+
+/public/build
+/public/hot
+/public/storage
+
+/storage/*.key
+/storage/app/public
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/testing
+/storage/framework/views
+/storage/logs
+
+/bootstrap/cache/*.php
+
+
+# ==========================================
+# Environment
+# ==========================================
+
+.env
+.env.*
+!.env.example
+
+
+# ==========================================
+# Testing
+# ==========================================
+
+.phpunit.result.cache
+/.phpunit.cache
+
+
+# ==========================================
+# Laravel / Homestead
+# ==========================================
+
+Homestead.json
+Homestead.yaml
+auth.json
+
+
+# ==========================================
+# IDE / Editor
+# ==========================================
+
+/.fleet
+/.idea
+/.nova
+/.vscode
+
+*.swp
+*.swo
+
+
+# ==========================================
+# Operating System
+# ==========================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+
+# ==========================================
+# Database
+# ==========================================
+
+*.sqlite
+*.sqlite3
+
+
+# ==========================================
+# Logs & Temporary Files
+# ==========================================
+
+*.log
+*.tmp
+*.temp
+*.bak
+
+
+# ==========================================
+# NPM / Package Manager Logs
+# ==========================================
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

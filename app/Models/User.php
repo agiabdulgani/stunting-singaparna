@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -12,20 +13,19 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Kolom yang dapat diisi melalui mass assignment.
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
+        'wilayah',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * Kolom yang disembunyikan ketika model
+     * diubah menjadi JSON.
      */
     protected $hidden = [
         'password',
@@ -33,9 +33,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Casting tipe data.
      */
     protected function casts(): array
     {
@@ -46,10 +44,29 @@ class User extends Authenticatable
     }
 
     /**
-     * Relasi ke model Child (Anak sebagai orang tua/parent)
+     * Relasi ke data anak.
+     *
+     * Satu user dapat menjadi orang tua/wali
+     * dari banyak anak.
      */
-    public function children()
+    public function children(): HasMany
     {
-        return $this->hasMany(Child::class, 'parent_id');
+        return $this->hasMany(
+            Child::class,
+            'parent_id'
+        );
+    }
+
+    /**
+     * Relasi ke data pengukuran yang dicatat user.
+     *
+     * Satu user dapat mencatat banyak pengukuran.
+     */
+    public function measurements(): HasMany
+    {
+        return $this->hasMany(
+            Measurement::class,
+            'recorded_by'
+        );
     }
 }

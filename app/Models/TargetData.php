@@ -9,8 +9,14 @@ class TargetData extends Model
 {
     use HasFactory;
 
+    /**
+     * Nama tabel database.
+     */
     protected $table = 'target_data';
 
+    /**
+     * Kolom yang dapat diisi melalui mass assignment.
+     */
     protected $fillable = [
         'village_name',
         'population_count',
@@ -19,10 +25,13 @@ class TargetData extends Model
         'children_count',
     ];
 
+    /**
+     * Casting tipe data.
+     */
     protected $casts = [
-        'population_count'   => 'integer',
-        'family_count'       => 'integer',
+        'population_count' => 'integer',
+        'family_count' => 'integer',
         'young_female_count' => 'integer',
-        'children_count'     => 'integer',
+        'children_count' => 'integer',
     ];
 }

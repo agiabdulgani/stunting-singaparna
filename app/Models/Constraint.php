@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\Constraint
  *
  * @property int $id
+ * @property string $village_name
  * @property string $scope
  * @property string $problem
  * @property string $cause
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $assessment
  * @property float $budget_needed
  * @property string $location_plan
+ * @property string $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  */
@@ -36,6 +38,7 @@ class Constraint extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'village_name',
         'scope',
         'problem',
         'cause',
@@ -43,6 +46,7 @@ class Constraint extends Model
         'assessment',
         'budget_needed',
         'location_plan',
+        'description',
     ];
 
     /**

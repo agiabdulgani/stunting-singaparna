@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\TargetData;
 use App\Models\SupportData;
+use App\Models\TargetData;
+use Illuminate\Database\Seeder;
 
 class VillageDataSeeder extends Seeder
 {
@@ -13,7 +13,10 @@ class VillageDataSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Data Sasaran (Desa di Kecamatan Singaparna)
+        // ==========================================
+        // 1. DATA SASARAN DESA
+        // ==========================================
+
         $targetData = [
             [
                 'village_name'       => 'Singaparna',
@@ -40,12 +43,17 @@ class VillageDataSeeder extends Seeder
 
         foreach ($targetData as $data) {
             TargetData::updateOrCreate(
-                ['village_name' => $data['village_name']],
+                [
+                    'village_name' => $data['village_name'],
+                ],
                 $data
             );
         }
 
-        // 2. Data Pendukung
+        // ==========================================
+        // 2. DATA PENDUKUNG DESA
+        // ==========================================
+
         $supportData = [
             [
                 'village_name'           => 'Singaparna',
@@ -72,7 +80,9 @@ class VillageDataSeeder extends Seeder
 
         foreach ($supportData as $data) {
             SupportData::updateOrCreate(
-                ['village_name' => $data['village_name']],
+                [
+                    'village_name' => $data['village_name'],
+                ],
                 $data
             );
         }

@@ -7,40 +7,72 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Jalankan migration.
      */
     public function up(): void
     {
-        // Tabel 1: Identifikasi Kendala
+        /*
+        |--------------------------------------------------------------------------
+        | Tabel Identifikasi Kendala
+        |--------------------------------------------------------------------------
+        */
         Schema::create('constraints', function (Blueprint $table) {
             $table->id();
-            $table->string('scope'); // Ruang Lingkup
-            $table->text('problem'); // Permasalahan
-            $table->text('cause'); // Penyebab Masalah
-            $table->text('recommendation'); // Rekomendasi
-            $table->string('assessment'); // Penilaian
-            $table->decimal('budget_needed', 15, 2)->default(0); // Kebutuhan Anggaran
-            $table->string('location_plan'); // Rencana Lokasi Kegiatan
+
+            // Ruang lingkup kendala
+            $table->string('scope')->index();
+
+            // Permasalahan
+            $table->text('problem');
+
+            // Penyebab masalah
+            $table->text('cause');
+
+            // Rekomendasi
+            $table->text('recommendation');
+
+            // Penilaian
+            $table->string('assessment');
+
+            // Kebutuhan anggaran
+            $table->decimal('budget_needed', 15, 2)->default(0);
+
+            // Rencana lokasi kegiatan
+            $table->string('location_plan')->index();
+
             $table->timestamps();
         });
 
-        // Tabel 2: Penyediaan Anggaran
+        /*
+        |--------------------------------------------------------------------------
+        | Tabel Penyediaan Anggaran
+        |--------------------------------------------------------------------------
+        */
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
-            $table->string('indicator_id'); // ID Indikator
-            $table->string('indicator_name'); // Indikator
-            $table->text('activity_description'); // Uraian Kegiatan
-            $table->decimal('amount', 15, 2)->default(0); // Jumlah (Rp)
+
+            // ID indikator
+            $table->string('indicator_id')->index();
+
+            // Nama indikator
+            $table->string('indicator_name');
+
+            // Uraian kegiatan
+            $table->text('activity_description');
+
+            // Jumlah anggaran dalam Rupiah
+            $table->decimal('amount', 15, 2)->default(0);
+
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Batalkan migration.
      */
     public function down(): void
     {
-        Schema::dropIfExists('constraints');
         Schema::dropIfExists('budgets');
+        Schema::dropIfExists('constraints');
     }
 };

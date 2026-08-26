@@ -7,24 +7,39 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Jalankan migration.
      */
     public function up(): void
     {
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
+
+            // Relasi polymorphic ke User atau model lain
             $table->morphs('tokenable');
-            $table->text('name');
+
+            // Nama token
+            $table->string('name');
+
+            // Token Sanctum
             $table->string('token', 64)->unique();
+
+            // Hak akses token
             $table->text('abilities')->nullable();
+
+            // Waktu terakhir token digunakan
             $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable()->index();
+
+            // Waktu token kadaluarsa
+            $table->timestamp('expires_at')
+                ->nullable()
+                ->index();
+
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Batalkan migration.
      */
     public function down(): void
     {

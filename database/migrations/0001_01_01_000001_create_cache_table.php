@@ -7,29 +7,39 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Jalankan migration.
      */
     public function up(): void
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Cache
+        |--------------------------------------------------------------------------
+        */
         Schema::create('cache', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
-            $table->integer('expiration');
+            $table->integer('expiration')->index();
         });
 
+        /*
+        |--------------------------------------------------------------------------
+        | Cache Locks
+        |--------------------------------------------------------------------------
+        */
         Schema::create('cache_locks', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->string('owner');
-            $table->integer('expiration');
+            $table->integer('expiration')->index();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Batalkan migration.
      */
     public function down(): void
     {
-        Schema::dropIfExists('cache');
         Schema::dropIfExists('cache_locks');
+        Schema::dropIfExists('cache');
     }
 };

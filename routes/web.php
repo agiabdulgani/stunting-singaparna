@@ -1,67 +1,297 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\VillageController;
 use App\Http\Controllers\WebAuthController;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes - SIMONITA (Stunting & MBG Singaparna)
+| Web Routes - SIMONITA
+| Sistem Informasi Monitoring Stunting & MBG Singaparna
 |--------------------------------------------------------------------------
 */
 
-// 1. RUTE AUTHENTICATION (Hanya bisa diakses jika belum login)
+
+// ==========================================================================
+// 1. AUTHENTICATION
+// ==========================================================================
+// Hanya dapat diakses oleh user yang BELUM login.
+// ==========================================================================
+
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [WebAuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [WebAuthController::class, 'login']);
-    Route::get('/register', [WebAuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [WebAuthController::class, 'register']);
+
+    // Login
+    Route::get('/login', [
+        WebAuthController::class,
+        'showLogin'
+    ])->name('login');
+
+    Route::post('/login', [
+        WebAuthController::class,
+        'login'
+    ]);
+
+    // Register
+    Route::get('/register', [
+        WebAuthController::class,
+        'showRegister'
+    ])->name('register');
+
+    Route::post('/register', [
+        WebAuthController::class,
+        'register'
+    ]);
 });
 
-// Logout (Memerlukan Sesi Active)
-Route::post('/logout', [WebAuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-// 2. RUTE APLIKASI UTAMA (Wajib Login)
+// ==========================================================================
+// 2. ROOT
+// ==========================================================================
+
+Route::get('/', function () {
+    return redirect()->route('dashboard');
+});
+
+
+// ==========================================================================
+// 3. APLIKASI UTAMA
+// ==========================================================================
+// Semua route di bawah wajib login.
+// ==========================================================================
+
 Route::middleware('auth')->group(function () {
 
-    // Halaman Utama & Dashboard SIMONITA
-    Route::get('/', [VillageController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard', [VillageController::class, 'index']);
 
-    // Export Laporan (PDF & Excel)
-    Route::prefix('export')->name('export.')->group(function () {
-        Route::get('/pdf', [VillageController::class, 'exportPdf'])->name('pdf');
-        Route::get('/excel', [VillageController::class, 'exportExcel'])->name('excel');
-    });
+    // ======================================================================
+    // AUTH / LOGOUT
+    // ======================================================================
 
-    // CRUD 1: Data Sasaran
-    Route::post('/target', [VillageController::class, 'storeTarget'])->name('target.store');
-    Route::put('/target/{target}', [VillageController::class, 'updateTarget'])->name('target.update');
-    Route::delete('/target/{target}', [VillageController::class, 'destroyTarget'])->name('target.destroy');
+    Route::post('/logout', [
+        WebAuthController::class,
+        'logout'
+    ])->name('logout');
 
-    // CRUD 2: Data Pendukung
-    Route::post('/support', [VillageController::class, 'storeSupport'])->name('support.store');
-    Route::put('/support/{support}', [VillageController::class, 'updateSupport'])->name('support.update');
-    Route::delete('/support/{support}', [VillageController::class, 'destroySupport'])->name('support.destroy');
 
-    // CRUD 3: Identifikasi Kendala
-    Route::post('/constraint', [VillageController::class, 'storeConstraint'])->name('constraint.store');
-    Route::put('/constraint/{constraint}', [VillageController::class, 'updateConstraint'])->name('constraint.update');
-    Route::delete('/constraint/{constraint}', [VillageController::class, 'destroyConstraint'])->name('constraint.destroy');
+    // ======================================================================
+    // DASHBOARD
+    // ======================================================================
 
-    // CRUD 4: Penyediaan Anggaran
-    Route::post('/budget', [VillageController::class, 'storeBudget'])->name('budget.store');
-    Route::put('/budget/{budget}', [VillageController::class, 'updateBudget'])->name('budget.update');
-    Route::delete('/budget/{budget}', [VillageController::class, 'destroyBudget'])->name('budget.destroy');
+    Route::get('/dashboard', [
+        VillageController::class,
+        'index'
+    ])->name('dashboard');
 
-    // CRUD 5: Capaian Layanan
-    Route::post('/service', [VillageController::class, 'storeService'])->name('service.store');
-    Route::put('/service/{service}', [VillageController::class, 'updateService'])->name('service.update');
-    Route::delete('/service/{service}', [VillageController::class, 'destroyService'])->name('service.destroy');
 
-    // CRUD 6: Makan Bergizi Gratis (MBG)
-    Route::post('/mbg', [VillageController::class, 'storeMbg'])->name('mbg.store');
-    Route::put('/mbg/{mbg}', [VillageController::class, 'updateMbg'])->name('mbg.update');
-    Route::delete('/mbg/{mbg}', [VillageController::class, 'destroyMbg'])->name('mbg.destroy');
+    // ======================================================================
+    // EXPORT LAPORAN
+    // ======================================================================
+
+    Route::prefix('export')
+        ->name('export.')
+        ->group(function () {
+
+            // Export PDF
+            Route::get('/pdf', [
+                VillageController::class,
+                'exportPdf'
+            ])->name('pdf');
+
+            // Export Excel
+            Route::get('/excel', [
+                VillageController::class,
+                'exportExcel'
+            ])->name('excel');
+        });
+
+
+    // ======================================================================
+    // MODUL 1 - DATA SASARAN
+    // ======================================================================
+
+    Route::prefix('target')
+        ->name('target.')
+        ->group(function () {
+
+            Route::post('/', [
+                VillageController::class,
+                'storeTarget'
+            ])->name('store');
+
+            Route::get('/{id}/edit', [
+                VillageController::class,
+                'editTarget'
+            ])->name('edit');
+
+            Route::put('/{target}', [
+                VillageController::class,
+                'updateTarget'
+            ])->name('update');
+
+            Route::delete('/{target}', [
+                VillageController::class,
+                'destroyTarget'
+            ])->name('destroy');
+        });
+
+
+    // ======================================================================
+    // MODUL 2 - DATA PENDUKUNG
+    // ======================================================================
+
+    Route::prefix('support')
+        ->name('support.')
+        ->group(function () {
+
+            Route::post('/', [
+                VillageController::class,
+                'storeSupport'
+            ])->name('store');
+
+            Route::put('/{support}', [
+                VillageController::class,
+                'updateSupport'
+            ])->name('update');
+
+            Route::delete('/{support}', [
+                VillageController::class,
+                'destroySupport'
+            ])->name('destroy');
+        });
+
+
+    // ======================================================================
+    // MODUL 3 - IDENTIFIKASI KENDALA
+    // ======================================================================
+
+    Route::prefix('constraint')
+        ->name('constraint.')
+        ->group(function () {
+
+            Route::post('/', [
+                VillageController::class,
+                'storeConstraint'
+            ])->name('store');
+
+            Route::put('/{constraint}', [
+                VillageController::class,
+                'updateConstraint'
+            ])->name('update');
+
+            Route::delete('/{constraint}', [
+                VillageController::class,
+                'destroyConstraint'
+            ])->name('destroy');
+        });
+
+
+    // ======================================================================
+    // MODUL 4 - PENYEDIAAN ANGGARAN
+    // ======================================================================
+
+    Route::prefix('budget')
+        ->name('budget.')
+        ->group(function () {
+
+            Route::post('/', [
+                VillageController::class,
+                'storeBudget'
+            ])->name('store');
+
+            Route::put('/{budget}', [
+                VillageController::class,
+                'updateBudget'
+            ])->name('update');
+
+            Route::delete('/{budget}', [
+                VillageController::class,
+                'destroyBudget'
+            ])->name('destroy');
+        });
+
+
+    // ======================================================================
+    // MODUL 5 - CAPAIAN LAYANAN
+    // ======================================================================
+
+    Route::prefix('service')
+        ->name('service.')
+        ->group(function () {
+
+            Route::post('/', [
+                VillageController::class,
+                'storeService'
+            ])->name('store');
+
+            Route::put('/{service}', [
+                VillageController::class,
+                'updateService'
+            ])->name('update');
+
+            Route::delete('/{service}', [
+                VillageController::class,
+                'destroyService'
+            ])->name('destroy');
+        });
+
+
+    // ======================================================================
+    // MODUL 6 - MAKAN BERGIZI GRATIS (MBG)
+    // ======================================================================
+
+    Route::prefix('mbg')
+        ->name('mbg.')
+        ->group(function () {
+
+            Route::post('/', [
+                VillageController::class,
+                'storeMbg'
+            ])->name('store');
+
+            Route::put('/{mbg}', [
+                VillageController::class,
+                'updateMbg'
+            ])->name('update');
+
+            Route::delete('/{mbg}', [
+                VillageController::class,
+                'destroyMbg'
+            ])->name('destroy');
+        });
+
+
+    // ======================================================================
+    // MODUL 7 - DATA INDIVIDU BALITA
+    // ======================================================================
+    //
+    // PENTING:
+    // Jangan menggunakan method MBG untuk data individu.
+    // Pastikan VillageController memiliki:
+    //
+    // storeIndividual()
+    // updateIndividual()
+    // destroyIndividual()
+    //
+    // ======================================================================
+
+    Route::prefix('individual')
+        ->name('individual.')
+        ->group(function () {
+
+            Route::post('/', [
+                VillageController::class,
+                'storeIndividual'
+            ])->name('store');
+
+            Route::put('/{individual}', [
+                VillageController::class,
+                'updateIndividual'
+            ])->name('update');
+
+            Route::delete('/{individual}', [
+                VillageController::class,
+                'destroyIndividual'
+            ])->name('destroy');
+        });
 
 });

@@ -1,1 +1,19 @@
-*.sqlite*
+# SQLite databases
+*.sqlite
+*.sqlite3
+
+# Laravel environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

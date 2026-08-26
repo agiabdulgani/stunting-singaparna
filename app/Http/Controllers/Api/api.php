@@ -10,67 +10,281 @@ use App\Http\Controllers\Api\VillageApiController;
 | API Routes - Stunting Singaparna
 |--------------------------------------------------------------------------
 |
-| File ini berisi seluruh rute REST API untuk aplikasi mobile Stunting Singaparna.
+| File ini berisi seluruh rute REST API untuk aplikasi mobile
+| Stunting Singaparna.
+|
 | Semua endpoint otomatis memiliki prefix '/api'.
 |
 */
 
 // ==========================================
-// 1. ENDPOINT PUBLIK (AUTENTIKASI)
+// 1. ENDPOINT PUBLIK
 // ==========================================
+
+// Login
 Route::post('/login', [AuthController::class, 'login']);
 
+// Register jika aplikasi membutuhkan pendaftaran user
+// Route::post('/register', [AuthController::class, 'register']);
+
+
 // ==========================================
-// 2. ENDPOINT TERPROTEKSI (WAJIB TOKEN SANCTUM)
+// 2. ENDPOINT TERPROTEKSI
+// WAJIB TOKEN SANCTUM
 // ==========================================
+
 Route::middleware('auth:sanctum')->group(function () {
 
-    // Auth Info & Logout
+    // ==========================================
+    // AUTH / USER
+    // ==========================================
+
+    // Informasi user yang sedang login
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        return response()->json([
+            'success' => true,
+            'message' => 'Data user berhasil diambil',
+            'data' => $request->user(),
+        ]);
     });
+
+    // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    // Ringkasan Dashboard Mobile App
-    Route::get('/dashboard', [VillageApiController::class, 'dashboard']);
 
-    // ------------------------------------------
-    // MODUL 1: DATA SASARAN (TARGET DATA)
-    // ------------------------------------------
-    Route::get('/targets', [VillageApiController::class, 'getTargets']);
-    Route::post('/targets', [VillageApiController::class, 'storeTarget']);
-    Route::put('/targets/{id}', [VillageApiController::class, 'updateTarget']);
-    Route::delete('/targets/{id}', [VillageApiController::class, 'destroyTarget']);
+    // ==========================================
+    // DASHBOARD
+    // ==========================================
 
-    // ------------------------------------------
-    // MODUL 2: DATA PENDUKUNG (SUPPORT DATA)
-    // ------------------------------------------
-    Route::get('/supports', [VillageApiController::class, 'getSupports']);
-    Route::post('/supports', [VillageApiController::class, 'storeSupport']);
-    Route::put('/supports/{id}', [VillageApiController::class, 'updateSupport']);
-    Route::delete('/supports/{id}', [VillageApiController::class, 'destroySupport']);
+    Route::get('/dashboard', [
+        VillageApiController::class,
+        'dashboard'
+    ]);
 
-    // ------------------------------------------
-    // MODUL 3: IDENTIFIKASI KENDALA (CONSTRAINTS)
-    // ------------------------------------------
-    Route::get('/constraints', [VillageApiController::class, 'getConstraints']);
-    Route::post('/constraints', [VillageApiController::class, 'storeConstraint']);
-    Route::put('/constraints/{id}', [VillageApiController::class, 'updateConstraint']);
-    Route::delete('/constraints/{id}', [VillageApiController::class, 'destroyConstraint']);
 
-    // ------------------------------------------
-    // MODUL 4: PENYEDIAAN ANGGARAN (BUDGETS)
-    // ------------------------------------------
-    Route::get('/budgets', [VillageApiController::class, 'getBudgets']);
-    Route::post('/budgets', [VillageApiController::class, 'storeBudget']);
-    Route::put('/budgets/{id}', [VillageApiController::class, 'updateBudget']);
-    Route::delete('/budgets/{id}', [VillageApiController::class, 'destroyBudget']);
+    // ==========================================
+    // MODUL 1: DATA SASARAN
+    // TARGET DATA
+    // ==========================================
 
-    // ------------------------------------------
-    // MODUL 5: CAPAIAN LAYANAN (SERVICE DATA)
-    // ------------------------------------------
-    Route::get('/services', [VillageApiController::class, 'getServices']);
-    Route::post('/services', [VillageApiController::class, 'storeService']);
-    Route::put('/services/{id}', [VillageApiController::class, 'updateService']);
-    Route::delete('/services/{id}', [VillageApiController::class, 'destroyService']);
+    // Semua data sasaran
+    Route::get('/targets', [
+        VillageApiController::class,
+        'getTargets'
+    ]);
+
+    // Detail sasaran
+    Route::get('/targets/{id}', [
+        VillageApiController::class,
+        'showTarget'
+    ]);
+
+    // Tambah sasaran
+    Route::post('/targets', [
+        VillageApiController::class,
+        'storeTarget'
+    ]);
+
+    // Update sasaran
+    Route::put('/targets/{id}', [
+        VillageApiController::class,
+        'updateTarget'
+    ]);
+
+    // Hapus sasaran
+    Route::delete('/targets/{id}', [
+        VillageApiController::class,
+        'destroyTarget'
+    ]);
+
+
+    // ==========================================
+    // MODUL 2: DATA PENDUKUNG
+    // SUPPORT DATA
+    // ==========================================
+
+    // Semua data pendukung
+    Route::get('/supports', [
+        VillageApiController::class,
+        'getSupports'
+    ]);
+
+    // Detail data pendukung
+    Route::get('/supports/{id}', [
+        VillageApiController::class,
+        'showSupport'
+    ]);
+
+    // Tambah data pendukung
+    Route::post('/supports', [
+        VillageApiController::class,
+        'storeSupport'
+    ]);
+
+    // Update data pendukung
+    Route::put('/supports/{id}', [
+        VillageApiController::class,
+        'updateSupport'
+    ]);
+
+    // Hapus data pendukung
+    Route::delete('/supports/{id}', [
+        VillageApiController::class,
+        'destroySupport'
+    ]);
+
+
+    // ==========================================
+    // MODUL 3: IDENTIFIKASI KENDALA
+    // CONSTRAINTS
+    // ==========================================
+
+    // Semua kendala
+    Route::get('/constraints', [
+        VillageApiController::class,
+        'getConstraints'
+    ]);
+
+    // Detail kendala
+    Route::get('/constraints/{id}', [
+        VillageApiController::class,
+        'showConstraint'
+    ]);
+
+    // Tambah kendala
+    Route::post('/constraints', [
+        VillageApiController::class,
+        'storeConstraint'
+    ]);
+
+    // Update kendala
+    Route::put('/constraints/{id}', [
+        VillageApiController::class,
+        'updateConstraint'
+    ]);
+
+    // Hapus kendala
+    Route::delete('/constraints/{id}', [
+        VillageApiController::class,
+        'destroyConstraint'
+    ]);
+
+
+    // ==========================================
+    // MODUL 4: PENYEDIAAN ANGGARAN
+    // BUDGETS
+    // ==========================================
+
+    // Semua anggaran
+    Route::get('/budgets', [
+        VillageApiController::class,
+        'getBudgets'
+    ]);
+
+    // Detail anggaran
+    Route::get('/budgets/{id}', [
+        VillageApiController::class,
+        'showBudget'
+    ]);
+
+    // Tambah anggaran
+    Route::post('/budgets', [
+        VillageApiController::class,
+        'storeBudget'
+    ]);
+
+    // Update anggaran
+    Route::put('/budgets/{id}', [
+        VillageApiController::class,
+        'updateBudget'
+    ]);
+
+    // Hapus anggaran
+    Route::delete('/budgets/{id}', [
+        VillageApiController::class,
+        'destroyBudget'
+    ]);
+
+
+    // ==========================================
+    // MODUL 5: CAPAIAN LAYANAN
+    // SERVICE DATA
+    // ==========================================
+
+    // Semua layanan
+    Route::get('/services', [
+        VillageApiController::class,
+        'getServices'
+    ]);
+
+    // Detail layanan
+    Route::get('/services/{id}', [
+        VillageApiController::class,
+        'showService'
+    ]);
+
+    // Tambah layanan
+    Route::post('/services', [
+        VillageApiController::class,
+        'storeService'
+    ]);
+
+    // Update layanan
+    Route::put('/services/{id}', [
+        VillageApiController::class,
+        'updateService'
+    ]);
+
+    // Hapus layanan
+    Route::delete('/services/{id}', [
+        VillageApiController::class,
+        'destroyService'
+    ]);
+
+
+    // ==========================================
+    // MODUL 6: DATA INDIVIDU
+    // INDIVIDUAL DATA
+    // ==========================================
+
+    // Semua data individu
+    Route::get('/individuals', [
+        VillageApiController::class,
+        'getIndividuals'
+    ]);
+
+    // Detail individu
+    Route::get('/individuals/{id}', [
+        VillageApiController::class,
+        'showIndividual'
+    ]);
+
+    // Tambah individu
+    Route::post('/individuals', [
+        VillageApiController::class,
+        'storeIndividual'
+    ]);
+
+    // Update individu
+    Route::put('/individuals/{id}', [
+        VillageApiController::class,
+        'updateIndividual'
+    ]);
+
+    // Hapus individu
+    Route::delete('/individuals/{id}', [
+        VillageApiController::class,
+        'destroyIndividual'
+    ]);
+
+
+    // ==========================================
+    // STATISTIK
+    // ==========================================
+
+    Route::get('/statistics', [
+        VillageApiController::class,
+        'statistics'
+    ]);
+
 });
