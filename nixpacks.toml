@@ -2,4 +2,4 @@
 nixPkgs = ["php82", "php82Packages.composer", "php82Extensions.zip", "php82Extensions.gd", "php82Extensions.pdo_mysql", "php82Extensions.mbstring", "php82Extensions.xml", "php82Extensions.curl"]
 
 [phases.build]
-cmds = ["export COMPOSER_ALLOW_SUPERUSER=1", "composer install --no-dev --optimize-autoloader"]
+cmds = ["export COMPOSER_ALLOW_SUPERUSER=1", "composer update --no-dev --optimize-autoloader"]
