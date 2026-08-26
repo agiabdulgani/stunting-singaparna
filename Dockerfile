@@ -1,6 +1,6 @@
 FROM php:8.2-cli
 
-# Install system dependencies
+# Install system dependencies & zip extension dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring gd
+    libzip-dev \
+    && docker-php-ext-install pdo pdo_pgsql mbstring gd zip
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -18,8 +19,8 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Install PHP dependencies with superuser permission allowed
+RUN export COMPOSER_ALLOW_SUPERUSER=1 && composer install --no-dev --optimize-autoloader
 
 EXPOSE 8080
 
