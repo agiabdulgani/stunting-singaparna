@@ -1,6 +1,6 @@
 FROM php:8.2-cli
 
-# Install system dependencies
+# Update and install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -19,12 +19,13 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Hapus paksa validasi ext-zip dari composer.json agar tidak divalidasi sama sekali
-RUN sed -i '/ext-zip/d' composer.json
+# Trik anti-cache total agar Docker membaca perubahan terbaru
+ARG BUILD_DATE=unspecified
+RUN echo "Building version: $BUILD_DATE"
 
-# Install PHP dependencies
+# Gunakan composer update dengan mengabaikan platform requirements agar tidak macet di ext-zip
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+RUN composer update --no-dev --optimize-autoloader --ignore-platform-reqs
 
 EXPOSE 8080
 
