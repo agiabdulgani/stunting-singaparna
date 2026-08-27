@@ -19,8 +19,9 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Install PHP dependencies with superuser permission allowed and bypass ext-zip platform check
-RUN export COMPOSER_ALLOW_SUPERUSER=1 && composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-zip
+# Set superuser and install with platform requirement ignore explicitly
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-zip
 
 EXPOSE 8080
 
