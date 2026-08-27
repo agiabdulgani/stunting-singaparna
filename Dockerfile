@@ -1,6 +1,6 @@
 FROM php:8.2-cli
 
-# Install system dependencies & zip extension dependencies
+# Install system dependencies & zip extension dependencies v2
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -19,7 +19,7 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Set superuser and install with platform requirement ignore explicitly
+# Install PHP dependencies with bypass flag forcing fresh cache
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-zip
 
