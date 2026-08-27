@@ -1,3 +1,6 @@
+FROM php:8.2-cli
+
+# Install system dependencies & zip extension dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -7,3 +10,18 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     && docker-php-ext-install pdo pdo_pgsql mbstring gd zip
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+# Copy project files
+COPY . .
+
+# Install PHP dependencies with superuser permission allowed and bypass ext-zip platform check
+RUN export COMPOSER_ALLOW_SUPERUSER=1 && composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-zip
+
+EXPOSE 8080
+
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080
