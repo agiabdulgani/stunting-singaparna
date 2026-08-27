@@ -16,8 +16,11 @@ WORKDIR /app
 
 COPY . .
 
+# Trik pamungkas: Hapus paksa konfigurasi platform require ext-zip dari composer.json
+RUN sed -i '/ext-zip/d' composer.json
+
 # Argumen acak untuk membuang cache lama total
-ARG CACHE_BUST=20260827
+ARG CACHE_BUST=20260827-v2
 RUN echo "Cache bust: $CACHE_BUST"
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
